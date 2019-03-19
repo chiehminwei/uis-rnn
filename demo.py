@@ -64,14 +64,17 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   model = uisrnn.UISRNN(model_args)
 
-  print(np.array(train_sequences).shape)
-  print(np.array(train_cluster_ids).shape)
+  train_sequences = np.array(train_sequences)
+  train_cluster_ids = np.array(train_cluster_ids)
   # training
-  for train_sequence, trian_cluster_id in zip(train_sequences, train_cluster_ids):
+  for i in range(train_sequences.shape[0]):
+    train_sequence = train_sequences[i]
+    print(train_sequence.shape)
+    trian_cluster_id = train_cluster_ids[i]
+    print(trian_cluster_id.shape)
+
     d = vars(training_args)
     d['learning_rate'] = 1e-3
-    print(train_cluster_id.shape)
-    print(len(train_cluster_id))
     model.fit(train_sequence, train_cluster_id, training_args)
   
   model.save(SAVED_MODEL_NAME)
