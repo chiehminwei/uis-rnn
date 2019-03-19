@@ -54,8 +54,7 @@ def diarization_experiment(model_args, training_args, inference_args):
 
 
 
-
-  chunk_size = train_sequences.shape[0] // 86
+  chunk_size = train_sequences.shape[0] // 1000
   left_over = train_sequences.shape[0] % chunk_size
   new_len = train_sequences.shape[0] - left_over
 
