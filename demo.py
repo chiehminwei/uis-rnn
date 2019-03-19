@@ -60,7 +60,7 @@ def diarization_experiment(model_args, training_args, inference_args):
   new_len = train_sequence.shape[0] - left_over
 
   train_sequences = np.split(train_sequence[:new_len], chunk_size)
-  train_cluster_ids = np.split(test_cluster_ids[:new_len], chunk_size)
+  train_cluster_ids = np.split(train_cluster_id[:new_len], chunk_size)
 
   model = uisrnn.UISRNN(model_args)
 
