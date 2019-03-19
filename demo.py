@@ -43,7 +43,7 @@ def diarization_experiment(model_args, training_args, inference_args):
   # test_cluster_ids = test_data['test_cluster_ids'].tolist()
   train_sequence = np.load('data/train_sequence.npy').astype(np.float64)
   train_cluster_id = np.load('data/train_cluster_id.npy')
-  test_sequence = np.load('data/test_sequence.npy')
+  test_sequence = np.load('data/test_sequence.npy').astype(np.float64)
   test_cluster_id = np.load('data/test_cluster_id.npy')
 
   model = uisrnn.UISRNN(model_args)
