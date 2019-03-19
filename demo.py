@@ -41,7 +41,7 @@ def diarization_experiment(model_args, training_args, inference_args):
   # train_cluster_id = train_data['train_cluster_id']
   # test_sequences = test_data['test_sequences'].tolist()
   # test_cluster_ids = test_data['test_cluster_ids'].tolist()
-  train_sequence = np.load('ata/train_sequence.npy')
+  train_sequence = np.load('data/train_sequence.npy')
   train_cluster_id = np.load('data/train_cluster_id.npy')
   test_sequences = np.load('data/test_sequence.npy')
   test_cluster_ids = np.load('data/test_cluster_id.npy')
