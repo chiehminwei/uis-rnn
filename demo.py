@@ -43,10 +43,10 @@ def diarization_experiment(model_args, training_args, inference_args):
   # test_cluster_ids = test_data['test_cluster_ids'].tolist()
   train_sequence = np.load('data/train_sequence.npy').astype(np.float64)
   train_cluster_id = np.load('data/train_cluster_id.npy')
-  test_sequence = np.load('data/test_sequence.npy').astype(np.float64)
-  test_cluster_id = np.load('data/test_cluster_id.npy')
-  test_sequences = np.split(test_sequence, 883)
-  test_cluster_ids = np.split(test_cluster_id, 883)
+  test_sequences = np.load('data/test_sequence.npy').astype(np.float64)
+  test_cluster_ids = np.load('data/test_cluster_id.npy')
+  test_sequences = np.split(test_sequences, 883)
+  test_cluster_ids = np.split(test_cluster_ids, 883)
 
   model = uisrnn.UISRNN(model_args)
 
@@ -59,6 +59,7 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   # testing
   for (test_sequence, test_cluster_id) in zip(test_sequences, test_cluster_ids):
+    test_cluster_id = test_cluster_id.tolist()
     predicted_cluster_id = model.predict(test_sequence, inference_args)
     predicted_cluster_ids.append(predicted_cluster_id)
     accuracy = uisrnn.compute_sequence_match_accuracy(
