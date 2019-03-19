@@ -74,7 +74,7 @@ def diarization_experiment(model_args, training_args, inference_args):
     d = vars(training_args)
     d['learning_rate'] = 1e-3
     print(train_sequence.shape)
-    print(trian_cluster_id.unravel().shape)
+    print(trian_cluster_id.ravel().shape)
     model.fit(train_sequence, train_cluster_id, training_args)
   
   model.save(SAVED_MODEL_NAME)
