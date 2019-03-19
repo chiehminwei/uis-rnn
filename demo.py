@@ -69,10 +69,10 @@ def diarization_experiment(model_args, training_args, inference_args):
   # training
   for i in range(train_sequences.shape[0]):
     train_sequence = train_sequences[i]
-    trian_cluster_id = train_cluster_ids[i]
-    print(trian_cluster_id)
-    trian_cluster_id = trian_cluster_id.tolist()
-    print(trian_cluster_id)
+    train_cluster_id = train_cluster_ids[i]
+    #print(trian_cluster_id)
+    train_cluster_id = train_cluster_id.tolist()
+    #print(train_cluster_id)
 
     d = vars(training_args)
     d['learning_rate'] = 1e-3
