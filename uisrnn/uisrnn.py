@@ -224,6 +224,9 @@ class UISRNN:
       raise ValueError('train_sequence does not match the dimension specified '
                        'by args.observation_dim.')
     if train_total_length != len(train_cluster_id):
+      print(train_total_length)
+      print(observation_dim)
+      print(len(train_cluster_id))
       raise ValueError('train_sequence length is not equal to '
                        'train_cluster_id length.')
 
