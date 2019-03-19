@@ -40,8 +40,8 @@ def diarization_experiment(model_args, training_args, inference_args):
   # train_cluster_id = train_data['train_cluster_id']
   # test_sequences = test_data['test_sequences'].tolist()
   # test_cluster_ids = test_data['test_cluster_ids'].tolist()
-  train_sequence = np.load('data/train_sequence.npy').astype(np.float64)
-  train_cluster_id = np.array(np.load('data/train_cluster_id.npy'))
+  train_sequences = np.load('data/train_sequence.npy').astype(np.float64)
+  train_cluster_ids = np.array(np.load('data/train_cluster_id.npy'))
   test_sequences = np.load('data/test_sequence.npy').astype(np.float64)
   test_cluster_ids = np.array(np.load('data/test_cluster_id.npy'))
 
@@ -59,8 +59,8 @@ def diarization_experiment(model_args, training_args, inference_args):
   left_over = train_sequence.shape[0] % chunk_size
   new_len = train_sequence.shape[0] - left_over
 
-  train_sequences = np.split(train_sequence[:new_len], chunk_size)
-  train_cluster_ids = np.split(train_cluster_id[:new_len], chunk_size)
+  train_sequences = np.split(train_sequences[:new_len], chunk_size)
+  train_cluster_ids = np.split(train_cluster_ids[:new_len], chunk_size)
 
   model = uisrnn.UISRNN(model_args)
 
