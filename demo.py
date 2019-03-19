@@ -54,32 +54,32 @@ def diarization_experiment(model_args, training_args, inference_args):
 
 
 
-  train_chunk_size = orig_train_sequences.shape[0] // 10000
-  train_left_over = orig_train_sequences.shape[0] % train_chunk_size
-  train_new_len = orig_train_sequences.shape[0] - train_left_over
+  # train_chunk_size = orig_train_sequences.shape[0] // 10000
+  # train_left_over = orig_train_sequences.shape[0] % train_chunk_size
+  # train_new_len = orig_train_sequences.shape[0] - train_left_over
 
-  train_sequences = np.split(orig_train_sequences[:train_new_len], train_chunk_size)
-  train_cluster_ids = np.split(orig_train_cluster_ids[:train_new_len], train_chunk_size)
+  # train_sequences = np.split(orig_train_sequences[:train_new_len], train_chunk_size)
+  # train_cluster_ids = np.split(orig_train_cluster_ids[:train_new_len], train_chunk_size)
 
   model = uisrnn.UISRNN(model_args)
+  model.fit(orig_train_sequences, orig_train_cluster_ids, training_args)
+  # train_sequences = np.array(train_sequences)
+  # train_cluster_ids = np.array(train_cluster_ids)
 
-  train_sequences = np.array(train_sequences)
-  train_cluster_ids = np.array(train_cluster_ids)
+  # d = vars(training_args)
+  # # training
+  # for i in range(train_sequences.shape[0]):
+  #   train_sequence = train_sequences[i]
+  #   train_cluster_id = train_cluster_ids[i]
+  #   train_cluster_id = train_cluster_id.tolist()
+  #   d['learning_rate'] = 1e-3
+  #   model.fit(train_sequence, train_cluster_id, training_args)
 
-  d = vars(training_args)
-  # training
-  for i in range(train_sequences.shape[0]):
-    train_sequence = train_sequences[i]
-    train_cluster_id = train_cluster_ids[i]
-    train_cluster_id = train_cluster_id.tolist()
-    d['learning_rate'] = 1e-3
-    model.fit(train_sequence, train_cluster_id, training_args)
-
-  # Take care of leftovers
-  train_sequence = orig_train_sequences[train_new_len:]
-  train_cluster_id = orig_train_cluster_ids[train_new_len:]
-  d['learning_rate'] = 1e-3
-  model.fit(train_sequence, train_cluster_id, training_args)
+  # # Take care of leftovers
+  # train_sequence = orig_train_sequences[train_new_len:]
+  # train_cluster_id = orig_train_cluster_ids[train_new_len:]
+  # d['learning_rate'] = 1e-3
+  # model.fit(train_sequence, train_cluster_id, training_args)
   model.save(SAVED_MODEL_NAME)
 
   # we can also skip training by calling：
