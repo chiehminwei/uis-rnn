@@ -59,13 +59,8 @@ def diarization_experiment(model_args, training_args, inference_args):
   left_over = train_sequence.shape[0] % chunk_size
   new_len = train_sequence.shape[0] - left_over
 
-  print(train_sequence.shape)
-  print(train_cluster_id.shape)
-
   train_sequences = np.split(train_sequence[:new_len], chunk_size)
   train_cluster_ids = np.split(train_cluster_id[:new_len], chunk_size)
-  print(np.array(train_sequences).shape)
-  print(np.array(train_cluster_ids).shape)
 
   model = uisrnn.UISRNN(model_args)
 
@@ -73,9 +68,7 @@ def diarization_experiment(model_args, training_args, inference_args):
   for train_sequence, trian_cluster_id in zip(train_sequences, train_cluster_ids):
     d = vars(training_args)
     d['learning_rate'] = 1e-3
-    print(train_sequence.shape)
-    print(trian_cluster_id.ravel().shape)
-    model.fit(train_sequence, train_cluster_id, training_args)
+    model.fit(train_sequence, train_cluster_id.ravel(), training_args)
   
   model.save(SAVED_MODEL_NAME)
   # we can also skip training by calling：
