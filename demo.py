@@ -68,7 +68,9 @@ def diarization_experiment(model_args, training_args, inference_args):
   for train_sequence, trian_cluster_id in zip(train_sequences, train_cluster_ids):
     d = vars(training_args)
     d['learning_rate'] = 1e-3
-    model.fit(train_sequence, train_cluster_id.ravel(), training_args)
+    print(train_cluster_id.shape)
+    print(len(train_cluster_id))
+    model.fit(train_sequence, train_cluster_id, training_args)
   
   model.save(SAVED_MODEL_NAME)
   # we can also skip training by calling：
