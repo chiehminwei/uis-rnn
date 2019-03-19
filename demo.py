@@ -40,43 +40,46 @@ def diarization_experiment(model_args, training_args, inference_args):
   # train_cluster_id = train_data['train_cluster_id']
   # test_sequences = test_data['test_sequences'].tolist()
   # test_cluster_ids = test_data['test_cluster_ids'].tolist()
-  train_sequences = np.load('data/train_sequence.npy').astype(np.float64)
-  train_cluster_ids = np.array(np.load('data/train_cluster_id.npy'))
-  test_sequences = np.load('data/test_sequence.npy').astype(np.float64)
-  test_cluster_ids = np.array(np.load('data/test_cluster_id.npy'))
+  orig_train_sequences = np.load('data/train_sequence.npy').astype(np.float64)
+  orig_train_cluster_ids = np.array(np.load('data/train_cluster_id.npy'))
+  orig_test_sequences = np.load('data/test_sequence.npy').astype(np.float64)
+  orig_test_cluster_ids = np.array(np.load('data/test_cluster_id.npy'))
 
-  chunk_size = test_sequences.shape[0] // 86
-  left_over = test_sequences.shape[0] % chunk_size
-  new_len = test_sequences.shape[0] - left_over
+  test_chunk_size = orig_test_sequences.shape[0] // 86
+  test_left_over = orig_test_sequences.shape[0] % test_chunk_size
+  test_new_len = orig_test_sequences.shape[0] - test_left_over
 
-  test_sequences = np.split(test_sequences[:new_len], chunk_size)
-  test_cluster_ids = np.split(test_cluster_ids[:new_len], chunk_size)
+  test_sequences = np.split(orig_test_sequences[:test_new_len], test_chunk_size)
+  test_cluster_ids = np.split(orig_test_cluster_ids[:test_new_len], test_chunk_size)
 
 
 
-  chunk_size = train_sequences.shape[0] // 10000
-  left_over = train_sequences.shape[0] % chunk_size
-  new_len = train_sequences.shape[0] - left_over
+  train_chunk_size = orig_train_sequences.shape[0] // 10000
+  train_left_over = orig_train_sequences.shape[0] % train_chunk_size
+  train_new_len = orig_train_sequences.shape[0] - train_left_over
 
-  train_sequences = np.split(train_sequences[:new_len], chunk_size)
-  train_cluster_ids = np.split(train_cluster_ids[:new_len], chunk_size)
+  train_sequences = np.split(orig_train_sequences[:train_new_len], train_chunk_size)
+  train_cluster_ids = np.split(orig_train_cluster_ids[:train_new_len], train_chunk_size)
 
   model = uisrnn.UISRNN(model_args)
 
   train_sequences = np.array(train_sequences)
   train_cluster_ids = np.array(train_cluster_ids)
+
+  d = vars(training_args)
   # training
   for i in range(train_sequences.shape[0]):
     train_sequence = train_sequences[i]
     train_cluster_id = train_cluster_ids[i]
-    #print(trian_cluster_id)
     train_cluster_id = train_cluster_id.tolist()
-    #print(train_cluster_id)
-
-    d = vars(training_args)
     d['learning_rate'] = 1e-3
     model.fit(train_sequence, train_cluster_id, training_args)
-  
+
+  # Take care of leftovers
+  train_sequence = orig_train_sequences[train_new_len:]
+  train_cluster_id = orig_train_cluster_id[train_new_len:]
+  d['learning_rate'] = 1e-3
+  model.fit(train_sequence, train_cluster_id, training_args)
   model.save(SAVED_MODEL_NAME)
   # we can also skip training by calling：
   # model.load(SAVED_MODEL_NAME)
@@ -95,6 +98,20 @@ def diarization_experiment(model_args, training_args, inference_args):
     print('Predicted labels:')
     print(predicted_cluster_id)
     print('-' * 80)
+
+  # Take care of leftover
+  test_sequence = orig_test_sequences[test_new_len:]
+  test_cluster_id = orig_test_cluster_id[test_new_len:].tolist()
+  predicted_cluster_id = model.predict(test_sequence, inference_args)
+  predicted_cluster_ids.append(predicted_cluster_id)
+  accuracy = uisrnn.compute_sequence_match_accuracy(
+      test_cluster_id, predicted_cluster_id)
+  test_record.append((accuracy, len(test_cluster_id)))
+  print('Ground truth labels:')
+  print(test_cluster_id)
+  print('Predicted labels:')
+  print(predicted_cluster_id)
+  print('-' * 80)
 
   output_string = uisrnn.output_result(model_args, training_args, test_record)
 
