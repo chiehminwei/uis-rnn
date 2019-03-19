@@ -34,13 +34,17 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   predicted_cluster_ids = []
   test_record = []
-
-  train_data = np.load('./data/toy_training_data.npz')
-  test_data = np.load('./data/toy_testing_data.npz')
-  train_sequence = train_data['train_sequence']
-  train_cluster_id = train_data['train_cluster_id']
-  test_sequences = test_data['test_sequences'].tolist()
-  test_cluster_ids = test_data['test_cluster_ids'].tolist()
+  
+  # train_data = np.load('./data/toy_training_data.npz')
+  # test_data = np.load('./data/toy_testing_data.npz')
+  # train_sequence = train_data['train_sequence']
+  # train_cluster_id = train_data['train_cluster_id']
+  # test_sequences = test_data['test_sequences'].tolist()
+  # test_cluster_ids = test_data['test_cluster_ids'].tolist()
+  train_sequence = np.load('./data/train_sequence.npz')
+  train_cluster_id = np.load('./data/train_cluster_id.npz')
+  test_sequences = np.load('./data/test_sequence.npz')
+  test_cluster_ids = np.load('./data/test_cluster_id.npz')
 
   model = uisrnn.UISRNN(model_args)
 
@@ -51,7 +55,10 @@ def diarization_experiment(model_args, training_args, inference_args):
   # model.load(SAVED_MODEL_NAME)
 
   # testing
+  i = 0
   for (test_sequence, test_cluster_id) in zip(test_sequences, test_cluster_ids):
+    if i > 3: break
+    i += 1
     predicted_cluster_id = model.predict(test_sequence, inference_args)
     predicted_cluster_ids.append(predicted_cluster_id)
     accuracy = uisrnn.compute_sequence_match_accuracy(
