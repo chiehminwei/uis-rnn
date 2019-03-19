@@ -77,7 +77,7 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   # Take care of leftovers
   train_sequence = orig_train_sequences[train_new_len:]
-  train_cluster_id = orig_train_cluster_id[train_new_len:]
+  train_cluster_id = orig_train_cluster_ids[train_new_len:]
   d['learning_rate'] = 1e-3
   model.fit(train_sequence, train_cluster_id, training_args)
   model.save(SAVED_MODEL_NAME)
