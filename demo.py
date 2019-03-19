@@ -64,8 +64,8 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   model = uisrnn.UISRNN(model_args)
 
-  print(train_sequences.shape)
-  print(train_cluster_ids.shape)
+  print(np.array(train_sequences).shape)
+  print(np.array(train_cluster_ids).shape)
   # training
   for train_sequence, trian_cluster_id in zip(train_sequences, train_cluster_ids):
     d = vars(training_args)
