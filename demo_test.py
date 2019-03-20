@@ -102,7 +102,7 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   # Take care of leftover
   test_sequence = orig_test_sequences[test_new_len:]
-  test_cluster_id = orig_test_cluster_id[test_new_len:].tolist()
+  test_cluster_id = orig_test_cluster_ids[test_new_len:].tolist()
   predicted_cluster_id = model.predict(test_sequence, inference_args)
   predicted_cluster_ids.append(predicted_cluster_id)
   accuracy = uisrnn.compute_sequence_match_accuracy(
