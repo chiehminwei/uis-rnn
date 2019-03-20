@@ -48,6 +48,11 @@ def diarization_experiment(model_args, training_args, inference_args):
   test_chunk_size = orig_test_sequences.shape[0] // 1000
   test_left_over = orig_test_sequences.shape[0] % test_chunk_size
   test_new_len = orig_test_sequences.shape[0] - test_left_over
+  print(orig_test_sequences.shape)
+  print(orig_test_cluster_ids.shape)
+  print(test_chunk_size)
+  print(test_left_over)
+  print(test_new_len)
 
   test_sequences = np.split(orig_test_sequences[:test_new_len], test_chunk_size)
   test_cluster_ids = np.split(orig_test_cluster_ids[:test_new_len], test_chunk_size)
