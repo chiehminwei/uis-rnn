@@ -56,14 +56,6 @@ def diarization_experiment(model_args, training_args, inference_args):
   test_cluster_ids = np.split(orig_test_cluster_ids[:test_new_len], test_chunk_size)
 
 
-
-  train_chunk_size = orig_train_sequences.shape[0] // 10000
-  train_left_over = orig_train_sequences.shape[0] % train_chunk_size
-  train_new_len = orig_train_sequences.shape[0] - train_left_over
-
-  train_sequences = np.split(orig_train_sequences[:train_new_len], train_chunk_size)
-  train_cluster_ids = np.split(orig_train_cluster_ids[:train_new_len], train_chunk_size)
-
   model = uisrnn.UISRNN(model_args)
 
   # train_sequences = np.array(train_sequences)
@@ -106,6 +98,9 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   # Then the rest
   for (test_sequence, test_cluster_id) in zip(test_sequences, test_cluster_ids):
+    print(test_sequence.shape)
+    print(test_cluster_id)
+    assert 1 == 2
     test_cluster_id = test_cluster_id.tolist()
     predicted_cluster_id = model.predict(test_sequence, inference_args)
     predicted_cluster_ids.append(predicted_cluster_id)
