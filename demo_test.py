@@ -87,19 +87,6 @@ def diarization_experiment(model_args, training_args, inference_args):
   
 
   # testing
-  for (test_sequence, test_cluster_id) in zip(test_sequences, test_cluster_ids):
-    test_cluster_id = test_cluster_id.tolist()
-    predicted_cluster_id = model.predict(test_sequence, inference_args)
-    predicted_cluster_ids.append(predicted_cluster_id)
-    accuracy = uisrnn.compute_sequence_match_accuracy(
-        test_cluster_id, predicted_cluster_id)
-    test_record.append((accuracy, len(test_cluster_id)))
-    print('Ground truth labels:')
-    print(test_cluster_id)
-    print('Predicted labels:')
-    print(predicted_cluster_id)
-    print('-' * 80)
-
   # Take care of leftover
   test_sequence = orig_test_sequences[test_new_len:]
   test_cluster_id = orig_test_cluster_ids[test_new_len:].tolist()
@@ -113,6 +100,22 @@ def diarization_experiment(model_args, training_args, inference_args):
   print('Predicted labels:')
   print(predicted_cluster_id)
   print('-' * 80)
+
+  # Then the rest
+  for (test_sequence, test_cluster_id) in zip(test_sequences, test_cluster_ids):
+    test_cluster_id = test_cluster_id.tolist()
+    predicted_cluster_id = model.predict(test_sequence, inference_args)
+    predicted_cluster_ids.append(predicted_cluster_id)
+    accuracy = uisrnn.compute_sequence_match_accuracy(
+        test_cluster_id, predicted_cluster_id)
+    test_record.append((accuracy, len(test_cluster_id)))
+    print('Ground truth labels:')
+    print(test_cluster_id)
+    print('Predicted labels:')
+    print(predicted_cluster_id)
+    print('-' * 80)
+
+  
 
   output_string = uisrnn.output_result(model_args, training_args, test_record)
 
