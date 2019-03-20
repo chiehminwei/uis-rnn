@@ -49,7 +49,7 @@ def diarization_experiment(model_args, training_args, inference_args):
   print(orig_test_cluster_ids.shape)
 
   orig_test_sequences = orig_test_sequences[:orig_test_sequences.shape[0]//100]
-  orig_test_cluster_ids = orig_test_cluster_ids[:orig_test_sequences.shape[0]//100]
+  orig_test_cluster_ids = orig_test_cluster_ids[:orig_test_cluster_ids.shape[0]//100]
 
   print(orig_test_sequences.shape)
   print(orig_test_cluster_ids.shape)
@@ -106,9 +106,9 @@ def diarization_experiment(model_args, training_args, inference_args):
 
   # Then the rest
   for (test_sequence, test_cluster_id) in zip(test_sequences, test_cluster_ids):
-    print(test_sequence.shape)
-    print(test_cluster_id)
-    assert 1 == 2
+    #print(test_sequence.shape)
+    #print(test_cluster_id)
+    #assert 1 == 2
     test_cluster_id = test_cluster_id.tolist()
     predicted_cluster_id = model.predict(test_sequence, inference_args)
     predicted_cluster_ids.append(predicted_cluster_id)
