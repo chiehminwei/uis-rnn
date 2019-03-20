@@ -45,7 +45,7 @@ def diarization_experiment(model_args, training_args, inference_args):
   orig_test_sequences = np.load('data/test_sequence.npy').astype(np.float64)
   orig_test_cluster_ids = np.array(np.load('data/test_cluster_id.npy'))
 
-  test_chunk_size = orig_test_sequences.shape[0] // 86
+  test_chunk_size = orig_test_sequences.shape[0] // 1000
   test_left_over = orig_test_sequences.shape[0] % test_chunk_size
   test_new_len = orig_test_sequences.shape[0] - test_left_over
 
