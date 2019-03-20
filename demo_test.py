@@ -48,8 +48,8 @@ def diarization_experiment(model_args, training_args, inference_args):
   print(orig_test_sequences.shape)
   print(orig_test_cluster_ids.shape)
 
-  orig_test_sequences = orig_test_sequences[:orig_test_sequences.shape[0]//100]
-  orig_test_cluster_ids = orig_test_cluster_ids[:orig_test_cluster_ids.shape[0]//100]
+  orig_test_sequences = orig_test_sequences[:orig_test_sequences.shape[0]//30]
+  orig_test_cluster_ids = orig_test_cluster_ids[:orig_test_cluster_ids.shape[0]//30]
 
   print(orig_test_sequences.shape)
   print(orig_test_cluster_ids.shape)
