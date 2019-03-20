@@ -45,8 +45,14 @@ def diarization_experiment(model_args, training_args, inference_args):
   orig_test_sequences = np.load('data/test_sequence.npy').astype(np.float64)
   orig_test_cluster_ids = np.array(np.load('data/test_cluster_id.npy'))
 
+  print(orig_test_sequences.shape)
+  print(orig_test_cluster_ids.shape)
+
   orig_test_sequences = orig_test_sequences[:orig_test_sequences.shape[0]//100]
   orig_test_cluster_ids = orig_test_cluster_ids[:orig_test_sequences.shape[0]//100]
+
+  print(orig_test_sequences.shape)
+  print(orig_test_cluster_ids.shape)
 
   test_chunk_size = orig_test_sequences.shape[0] // 86
   test_left_over = orig_test_sequences.shape[0] % test_chunk_size
@@ -55,6 +61,8 @@ def diarization_experiment(model_args, training_args, inference_args):
   test_sequences = np.split(orig_test_sequences[:test_new_len], test_chunk_size)
   test_cluster_ids = np.split(orig_test_cluster_ids[:test_new_len], test_chunk_size)
 
+  print(test_sequences.shape)
+  print(test_cluster_ids.shape)
 
   model = uisrnn.UISRNN(model_args)
 
